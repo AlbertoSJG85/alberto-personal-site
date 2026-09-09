@@ -94,8 +94,15 @@ h3 {
   letter-spacing: 0.02em;
 }
 
+/*
+ * Los índices de sección ("01", "02"...) se leían demasiado pequeños junto
+ * al peso del resto de la página: tamaño y peso propios, más grandes que
+ * el resto de etiquetas mono con las que comparten clase.
+ */
 .index {
   font-variant-numeric: tabular-nums;
+  font-size: 1rem;
+  font-weight: 600;
   letter-spacing: 0.02em;
 }
 

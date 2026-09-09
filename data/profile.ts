@@ -97,7 +97,7 @@ export const profileText: Record<Locale, ProfileText> = {
       "Construyo productos digitales y automatizaciones de extremo a extremo para resolver problemas reales: desde la idea y la arquitectura hasta las integraciones, el despliegue y la operación.",
     heroSecondLine:
       "Mi fortaleza no viene de una trayectoria corporativa convencional, sino de haber tenido que aprender cada capa necesaria para hacer que mis propios sistemas funcionen de verdad.",
-    storyTitle: "Construí para resolver mis propios problemas",
+    storyTitle: "Así es como trabajo",
     photoAlt: "Retrato de Alberto Sebastián Jiménez García",
     languages: [
       { lang: "Español", level: "Nativo" },
@@ -116,7 +116,7 @@ export const profileText: Record<Locale, ProfileText> = {
       "I build digital products and end-to-end automations to solve real problems: from the idea and the architecture through integrations, deployment and operation.",
     heroSecondLine:
       "My strength doesn't come from a conventional corporate track, but from having had to learn every layer needed to make my own systems actually work.",
-    storyTitle: "I built to solve my own problems",
+    storyTitle: "This is how I work",
     photoAlt: "Portrait of Alberto Sebastián Jiménez García",
     languages: [
       { lang: "Spanish", level: "Native" },
