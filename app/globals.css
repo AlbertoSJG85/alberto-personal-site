@@ -1,0 +1,220 @@
+@import "tailwindcss";
+
+/*
+ * Dirección visual: monocromo oscuro, tipografía industrial de gran peso y
+ * un único color de señal (rojo) usado con disciplina —índices, reglas,
+ * estados y hover—, nunca en superficies grandes. El retrato no es una
+ * imagen "pegada" en una columna: se funde con el fondo para que portada e
+ * identidad sean una sola pieza.
+ */
+:root {
+  --bg: #0a0a0b;
+  --bg-2: #111113;
+  --bg-3: #17171a;
+  --fg: #f4f3f0;
+  --fg-2: #a09f9c;
+  --fg-3: #6b6a68;
+  --rule: #232326;
+  --rule-strong: #34343a;
+  --accent: #e8432b;
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-bg-3: var(--bg-3);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-fg-3: var(--fg-3);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-accent: var(--accent);
+
+  --font-display: var(--font-rajdhani);
+  --font-body: var(--font-chakra-petch);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/*
+ * Titulares: peso máximo y tracking negativo. La personalidad de la página
+ * está aquí, en el contraste entre bloques tipográficos muy pesados y el
+ * mono pequeño de los metadatos.
+ */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+/*
+ * Nunca se fuerzan mayúsculas en titulares: los nombres de producto llevan
+ * su capitalización propia (PilotOS, ClinicOS, RentOS, GlorIA) y un
+ * `text-transform: uppercase` los destruiría. Las mayúsculas quedan
+ * reservadas a las micro-etiquetas mono, donde no aparece ningún nombre de
+ * producto.
+ *
+ * Rajdhani solo define hasta el peso 700 (no tiene 800/900): forzar un
+ * peso mayor haría que el navegador la negrita "sintéticamente" —
+ * distorsionada y peor que el 700 real.
+ */
+.display {
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+}
+
+/* Metadato mono: etiquetas de sección, índices, chips y pies. */
+.mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.mono-sm {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.index {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Enlace: subrayado fino que crece al hover, en color de señal. */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1.5px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 240ms ease-out;
+}
+
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/*
+ * Retrato cinematográfico: además del blanco y negro, se hunden las luces
+ * para que el fondo claro de la foto original no rompa el negro de la
+ * página. Junto con el viñeteado, el retrato deja de leerse como un
+ * rectángulo y pasa a formar parte del fondo.
+ */
+.portrait {
+  filter: grayscale(1) contrast(1.22) brightness(0.62);
+}
+
+/* Fundido del retrato contra el fondo: abajo siempre; en desktop también
+ * por la izquierda, que es donde entra la tipografía. */
+.portrait-blend {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 65% 35%, rgb(10 10 11 / 0) 30%, var(--bg) 100%),
+    linear-gradient(to top, var(--bg) 2%, rgb(10 10 11 / 0) 45%);
+}
+
+@media (min-width: 1024px) {
+  .portrait-blend {
+    background:
+      radial-gradient(110% 85% at 62% 40%, rgb(10 10 11 / 0) 28%, var(--bg) 100%),
+      linear-gradient(to right, var(--bg) 12%, rgb(10 10 11 / 0.15) 52%, rgb(10 10 11 / 0) 78%),
+      linear-gradient(to top, var(--bg) 1%, rgb(10 10 11 / 0) 40%);
+  }
+}
+
+/* Reveal discreto; nunca deja contenido oculto si falla el JS. */
+.reveal {
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.reveal-pending {
+  opacity: 0;
+  transform: translateY(14px);
+  will-change: opacity, transform;
+}
+
+.reveal.reveal-pending.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*
+ * Desplegable de "Mi historia": se anima la fila del grid de 0fr a 1fr, que
+ * es la forma estándar de animar "hasta el alto del contenido" sin fijar
+ * una altura mágica. El contenido se marca `inert` desde el componente
+ * mientras está cerrado, para que no reciba foco ni lectura.
+ */
+.disclosure {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.disclosure[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.disclosure > * {
+  overflow: hidden;
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal.reveal-pending {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}

@@ -1,0 +1,12 @@
+# No copiar contexto/secretos innecesarios a las capas de la imagen
+# (patrón de fallo real documentado: `COPY . .` sin .dockerignore puede
+# incorporar .env, node_modules o material de desarrollo al build).
+node_modules
+.next
+.git
+.env*
+*.log
+npm-debug.log*
+referencias landings
+LANDING_PERSONAL_ALBERTO_ESPECIFICACION_CLAUDE.md
+MI_HISTORIA_LANDING.md
