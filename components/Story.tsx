@@ -17,6 +17,13 @@ import { uiStrings } from "@/data/ui-strings";
  * un bloque por etapa, cada uno con su propio titular. A propósito no
  * llevan número — es una historia, no una lista ordenada—: cada bloque se
  * marca con un cuadrado de color de señal en vez de "01, 02, 03...".
+ *
+ * En escritorio la foto va a la derecha (mismo lado que el retrato de la
+ * portada) y el texto a la izquierda, con un solape sutil: el texto entra
+ * un poco en la foto por el borde que ya está difuminado hacia el fondo
+ * (`.portrait-blend`, que funde justo el lado izquierdo de la imagen), así
+ * que las últimas palabras de cada línea larga se leen sobre la foto sin
+ * que compitan con ningún detalle nítido.
  */
 export default function Story() {
   const { locale } = useLocale();
@@ -26,22 +33,22 @@ export default function Story() {
 
   return (
     <Disclosure sectionId="historia" index="02" title={t.title}>
-      <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
         {profile.photoSecondaryUrl && (
-          <div className="relative mx-auto aspect-[4/5] w-full max-w-xs self-start sm:max-w-sm lg:sticky lg:top-28 lg:mx-0 lg:max-w-none">
+          <div className="relative order-first mx-auto aspect-[4/5] w-full max-w-sm self-start sm:max-w-md lg:order-2 lg:sticky lg:top-28 lg:mx-0 lg:max-w-none">
             <Image
               src={profile.photoSecondaryUrl}
               alt={profileText.photoAlt}
               fill
               loading="lazy"
-              sizes="(max-width: 1024px) 70vw, 32vw"
+              sizes="(max-width: 1024px) 70vw, 46vw"
               className="portrait object-cover object-top"
             />
             <span className="portrait-blend" aria-hidden="true" />
           </div>
         )}
 
-        <div className="flex flex-col gap-10">
+        <div className="relative order-last flex flex-col gap-10 lg:order-1 lg:z-10 lg:-mr-20">
           <p className="mono text-fg-3">{eyebrow}</p>
 
           {beats.map((beat) => (

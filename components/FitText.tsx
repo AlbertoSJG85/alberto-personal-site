@@ -57,6 +57,13 @@ export default function FitText({
 
       const scale = available / naturalWidth;
       const next = Math.max(minFontSizePx, baseFontSizePx * scale);
+      // Aplicar ya mismo, imperativamente: si esta llamada recalcula el
+      // mismo valor que la anterior (típico — nada cambió de verdad),
+      // `setFontSize(next)` no provoca un nuevo render porque React ve el
+      // mismo estado. Sin esta línea, el nodo se quedaba con el tamaño de
+      // medición (`baseFontSizePx`) que la propia función acaba de fijar
+      // dos líneas más arriba, porque nada volvía a corregirlo.
+      node.style.fontSize = `${next}px`;
       setFontSize(next);
     };
 
@@ -64,7 +71,27 @@ export default function FitText({
 
     const observer = new ResizeObserver(fit);
     observer.observe(container);
-    return () => observer.disconnect();
+
+    // Las fuentes (next/font, `display: swap`) cargan de forma asíncrona.
+    // Si `fit()` mide antes de que la tipografía real termine de cargar,
+    // el cálculo se basa en las métricas de la fuente de reserva — y el
+    // ResizeObserver del contenedor puede no detectar el desajuste
+    // posterior, porque next/font ajusta esa reserva precisamente para que
+    // el contenedor casi no cambie de tamaño al intercambiar la fuente.
+    // Sin este recálculo explícito, el resultado dependía de qué fuente
+    // (la del nombre o la del rol) terminaba de cargar antes: unas veces se
+    // quedaba corto, otras se pasaba. `document.fonts.ready` resuelve
+    // cuando todas las fuentes de la página ya están listas, así que una
+    // medición ahí siempre es la definitiva.
+    let cancelled = false;
+    document.fonts?.ready?.then(() => {
+      if (!cancelled) fit();
+    });
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+    };
   }, [containerRef, baseFontSizePx, minFontSizePx, text]);
 
   return (
