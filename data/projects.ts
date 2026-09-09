@@ -153,7 +153,6 @@ export const projects: Project[] = [
     name: "ClinicOS",
     descriptor: "Gestión clínica",
     tier: 2,
-    status: "en-desarrollo",
     summary:
       "Vertical sanitaria trabajada en simulación segura, sobre un core tipado con clasificación determinista. No es un backend médico en producción: es el terreno donde pruebo el core del ecosistema con reglas estrictas.",
     landingUrl: "https://clinicos.nexostudios.digital/",
@@ -161,8 +160,22 @@ export const projects: Project[] = [
       "Core tipado (Node.js, TypeScript)",
       "Clasificación determinista",
       "Vertical sanitaria en simulación segura",
+      "IA aplicada (OpenAI) y canales WhatsApp / Instagram",
     ],
-    stack: ["Node.js", "TypeScript"],
+    // Verificado contra el repo real (2026-09-09): backend Node.js/TypeScript
+    // con PostgreSQL, Docker para el entorno de desarrollo, IA vía OpenAI y
+    // canales de mensajería Meta (WhatsApp, Instagram) sobre webhooks/REST.
+    stack: [
+      "Node.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Docker",
+      "OpenAI",
+      "WhatsApp",
+      "Instagram",
+      "REST APIs",
+      "webhooks",
+    ],
     visual: { kind: "placeholder" },
   },
   {
@@ -201,29 +214,38 @@ export const projects: Project[] = [
   {
     slug: "hermes",
     name: "Hermes",
-    // La etiqueta obligatoria "en desarrollo" se muestra como badge a partir
-    // de `status`, así que no se repite aquí.
     descriptor: "Agente autónomo / asistente de ejecución",
     tier: 2,
-    status: "en-desarrollo",
     summary:
       "Agente de ejecución con worker local y automatización de navegador sobre una arquitectura VPS ↔ Windows, con permisos y restricciones acotados.",
     capabilities: [
-      "Automatización de navegador (Playwright)",
-      "Worker local y scripts",
-      "Arquitectura VPS ↔ Windows",
-      "Permisos y restricciones",
+      "Automatización de navegador (Chrome DevTools Protocol)",
+      "Worker local y scripts (Python y Node.js)",
+      "Arquitectura VPS ↔ Windows con túnel SSH",
+      "Identidad de dispositivo firmada (Ed25519) y permisos acotados",
     ],
-    stack: ["Python", "Playwright"],
+    // Verificado contra el repo real (2026-09-09): el gateway/worker habla
+    // CDP directo sobre HTTP, no Playwright; hay tanto Python (gateway,
+    // worker) como Node.js (herramientas locales, ffmpeg/sharp para
+    // contenido); persistencia en SQLite y despliegue como servicio en
+    // Linux (VPS) y Windows.
+    stack: [
+      "Python",
+      "Node.js",
+      "Chrome DevTools Protocol",
+      "SQLite",
+      "SSH",
+      "systemd",
+      "Windows",
+    ],
     visual: {
       kind: "diagram",
       steps: [
         { label: "VPS" },
         { label: "Gateway" },
         { label: "Windows Worker" },
-        { label: "Playwright / Browser" },
+        { label: "CDP / Browser" },
       ],
-      note: "En desarrollo",
     },
   },
   // ---------------------------------------------------------------- Tier 3

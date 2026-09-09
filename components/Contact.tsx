@@ -2,7 +2,7 @@
 
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
-import { profile } from "@/data/profile";
+import { profile, useProfileText } from "@/data/profile";
 import { useLocale } from "./LanguageProvider";
 import { uiStrings } from "@/data/ui-strings";
 
@@ -14,6 +14,7 @@ import { uiStrings } from "@/data/ui-strings";
 export default function Contact() {
   const { locale } = useLocale();
   const t = uiStrings[locale].contact;
+  const text = useProfileText();
 
   return (
     <section id="contacto" className="scroll-mt-20 bg-bg py-20 sm:py-32">
@@ -63,9 +64,9 @@ export default function Contact() {
             >
               NexOS ↗
             </a>
-            {profile.cvUrl ? (
+            {text.cvUrl ? (
               <a
-                href={profile.cvUrl}
+                href={text.cvUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mono link-underline text-fg"

@@ -86,8 +86,8 @@ export default function Hero() {
           <CTAButton href="#proyectos" variant="solid">
             {t.verProyectos}
           </CTAButton>
-          {profile.cvUrl ? (
-            <CTAButton href={profile.cvUrl} external variant="text">
+          {text.cvUrl ? (
+            <CTAButton href={text.cvUrl} external variant="text">
               {t.descargarCv}
             </CTAButton>
           ) : (

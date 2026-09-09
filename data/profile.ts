@@ -57,13 +57,6 @@ export const profile = {
    */
   photoUrl: "/alberto-hero.png" as string | null,
   photoSecondaryUrl: "/alberto-retrato.png" as string | null,
-
-  // No existe todavía el PDF definitivo del CV en el entorno local. Se deja
-  // en null a propósito: el CTA "Descargar CV" debe seguir siendo visible
-  // (así lo pide el documento maestro) pero en estado deshabilitado hasta
-  // que exista el archivo. Ruta reservada para cuando Alberto añada el PDF:
-  // `public/Alberto_Sebastian_Jimenez_Garcia_CV.pdf`.
-  cvUrl: null as string | null,
 } as const;
 
 export interface ProfileText {
@@ -79,6 +72,14 @@ export interface ProfileText {
   storyTitle: string;
   photoAlt: string;
   languages: LanguageLevel[];
+  /**
+   * CV en el idioma de la vista activa: español en `es`, inglés en `en`.
+   * Ambos PDF viven en `public/` (`CV_Alberto_Jimenez_Garcia_ES.pdf` y
+   * `..._EN.pdf`). Si algún día falta uno, poner `null` ahí y el CTA
+   * "Descargar CV" vuelve a mostrarse deshabilitado en ese idioma, sin
+   * romper nada.
+   */
+  cvUrl: string | null;
 }
 
 export const profileText: Record<Locale, ProfileText> = {
@@ -106,6 +107,7 @@ export const profileText: Record<Locale, ProfileText> = {
       { lang: "Español", level: "Nativo" },
       { lang: "Inglés", level: "B1" },
     ],
+    cvUrl: "/CV_Alberto_Jimenez_Garcia_ES.pdf",
   },
   en: {
     location: "Tenerife, Spain",
@@ -128,6 +130,7 @@ export const profileText: Record<Locale, ProfileText> = {
       { lang: "Spanish", level: "Native" },
       { lang: "English", level: "B1" },
     ],
+    cvUrl: "/CV_Alberto_Jimenez_Garcia_EN.pdf",
   },
 };
 
