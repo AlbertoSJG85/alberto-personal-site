@@ -23,8 +23,15 @@ interface FitTextProps {
  * letra en la proporción exacta que hace falta, tanto para encoger (si el
  * texto no cabe) como para crecer (si sobra espacio): el tamaño de
  * referencia (`baseFontSizePx`) es solo el punto de partida para medir el
- * ancho natural, no un techo. Solo `minFontSizePx` actúa de límite, para
- * que en pantallas muy estrechas no se vuelva ilegible.
+ * ancho natural, no un techo.
+ *
+ * `minFontSizePx` es un suelo de legibilidad, no una garantía de que quepa:
+ * en un móvil estrecho, el nombre (el contenedor de referencia) puede ser
+ * mucho más corto que lo que este texto necesita incluso al tamaño mínimo.
+ * Si eso ocurre, se deja de forzar una sola línea y el texto envuelve
+ * normalmente dentro del ancho disponible — la alternativa (mantenerlo en
+ * una línea) lo sacaría por el borde de la pantalla, que es exactamente el
+ * corte que no queremos.
  *
  * Mide con `useLayoutEffect` (antes de pintar, sin parpadeo) y un
  * ResizeObserver sobre el contenedor de referencia, así que se recalcula
@@ -41,6 +48,7 @@ export default function FitText({
 }: FitTextProps) {
   const textRef = useRef<HTMLSpanElement>(null);
   const [fontSize, setFontSize] = useState(baseFontSizePx);
+  const [wrap, setWrap] = useState(false);
 
   useLayoutEffect(() => {
     const container = containerRef.current;
@@ -48,23 +56,30 @@ export default function FitText({
     if (!container || !node) return;
 
     const fit = () => {
-      // Mide el ancho natural del texto al tamaño de referencia (mutación
-      // directa, solo para medir) y escala a partir de ahí.
+      // Mide el ancho natural del texto al tamaño de referencia, siempre en
+      // una sola línea (mutación directa, solo para medir), y escala a
+      // partir de ahí.
+      node.style.whiteSpace = "nowrap";
       node.style.fontSize = `${baseFontSizePx}px`;
       const naturalWidth = node.getBoundingClientRect().width;
       const available = container.getBoundingClientRect().width;
       if (naturalWidth === 0 || available === 0) return;
 
       const scale = available / naturalWidth;
-      const next = Math.max(minFontSizePx, baseFontSizePx * scale);
+      const idealNext = baseFontSizePx * scale;
+      const mustWrap = idealNext < minFontSizePx;
+      const next = mustWrap ? minFontSizePx : idealNext;
+
       // Aplicar ya mismo, imperativamente: si esta llamada recalcula el
       // mismo valor que la anterior (típico — nada cambió de verdad),
-      // `setFontSize(next)` no provoca un nuevo render porque React ve el
+      // los `setState` no provocan un nuevo render porque React ve el
       // mismo estado. Sin esta línea, el nodo se quedaba con el tamaño de
-      // medición (`baseFontSizePx`) que la propia función acaba de fijar
-      // dos líneas más arriba, porque nada volvía a corregirlo.
+      // medición (`baseFontSizePx`) o el `nowrap` que la propia función
+      // acaba de fijar arriba, porque nada volvía a corregirlo.
       node.style.fontSize = `${next}px`;
+      node.style.whiteSpace = mustWrap ? "normal" : "nowrap";
       setFontSize(next);
+      setWrap(mustWrap);
     };
 
     fit();
@@ -95,7 +110,11 @@ export default function FitText({
   }, [containerRef, baseFontSizePx, minFontSizePx, text]);
 
   return (
-    <span ref={textRef} className={className} style={{ fontSize, whiteSpace: "nowrap" }}>
+    <span
+      ref={textRef}
+      className={className}
+      style={{ fontSize, whiteSpace: wrap ? "normal" : "nowrap" }}
+    >
       {text}
     </span>
   );

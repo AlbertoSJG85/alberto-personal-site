@@ -82,7 +82,7 @@ export default function Hero() {
           </p>
         </MatchWidth>
 
-        <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <div className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-4 sm:gap-x-8">
           <CTAButton href="#proyectos" variant="solid">
             {t.verProyectos}
           </CTAButton>

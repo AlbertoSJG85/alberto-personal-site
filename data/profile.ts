@@ -88,7 +88,10 @@ export const profileText: Record<Locale, ProfileText> = {
     // Términos de rol ya en inglés en el propio mercado hispanohablante:
     // traducirlos sonaría forzado, así que se mantienen igual en los dos
     // idiomas.
-    headline: "Applied AI · Full-Stack · Automation · Product Engineering",
+    // Espacios irrompibles en "Automation · Product Engineering": si la
+    // línea tiene que envolver en móvil (ver FitText), ese tramo cae
+    // entero en la misma línea, en vez de partirse por en medio.
+    headline: "Applied AI · Full-Stack · Automation · Product Engineering",
     shortDescription:
       "Constructor de productos digitales y automatizaciones para problemas reales. Trabajo de extremo a extremo entre producto, IA aplicada, frontend, backend, integraciones e infraestructura.",
     secondSentence:
@@ -107,7 +110,10 @@ export const profileText: Record<Locale, ProfileText> = {
   en: {
     location: "Tenerife, Spain",
     eyebrow: "Tenerife, Spain · Open to remote opportunities",
-    headline: "Applied AI · Full-Stack · Automation · Product Engineering",
+    // Espacios irrompibles en "Automation · Product Engineering": si la
+    // línea tiene que envolver en móvil (ver FitText), ese tramo cae
+    // entero en la misma línea, en vez de partirse por en medio.
+    headline: "Applied AI · Full-Stack · Automation · Product Engineering",
     shortDescription:
       "I build digital products and automations for real problems. I work end to end across product, applied AI, frontend, backend, integrations and infrastructure.",
     secondSentence:

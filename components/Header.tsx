@@ -38,15 +38,17 @@ function LanguageSwitcher() {
             type="button"
             onClick={() => setLocale(option.value)}
             aria-pressed={active}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 font-mono text-xs uppercase tracking-[0.08em] transition-colors duration-200 ${
+            className={`flex items-center gap-1 px-1.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.06em] transition-colors duration-200 sm:gap-1.5 sm:px-2.5 sm:py-1.5 sm:text-xs sm:tracking-[0.08em] ${
               i === 1 ? "border-l border-rule-strong" : ""
             } ${active ? "bg-accent text-bg" : "text-fg-2 hover:text-fg"}`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- icono
-                SVG estático de 20x14: no necesita el pipeline de
-                optimización de next/image (pensado para fotos), y next/image
-                desactiva SVG por defecto por seguridad. */}
-            <img src={option.flag} alt="" width={20} height={14} className="block" />
+                SVG estático: no necesita el pipeline de optimización de
+                next/image (pensado para fotos), y next/image desactiva SVG
+                por defecto por seguridad. Más pequeño en móvil (14x10) que
+                en el resto de tamaños (20x14) — el control entero se
+                encoge ahí para no competir con el logo. */}
+            <img src={option.flag} alt="" className="block h-[10px] w-[14px] sm:h-[14px] sm:w-[20px]" />
             {option.label}
           </button>
         );
